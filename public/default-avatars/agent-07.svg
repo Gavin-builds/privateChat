@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg07" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#2a1d08"/>
+      <stop offset="100%" stop-color="#06070c"/>
+    </radialGradient>
+    <filter id="glow07" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid07" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#ffb347" stroke-opacity="0.10" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="120" height="120" fill="url(#bg07)"/>
+  <rect width="120" height="120" fill="url(#grid07)"/>
+  <circle cx="60" cy="60" r="46" fill="none" stroke="#ffb347" stroke-opacity="0.32" stroke-dasharray="3 7"/>
+  <g filter="url(#glow07)" fill="none" stroke="#ffb347" stroke-width="3" stroke-linejoin="round">
+    <path d="M60 26 L82 38 L82 64 Q82 78 60 92 Q38 78 38 64 L38 38 Z"/>
+    <path d="M38 38 L54 46 M82 38 L66 46"/>
+  </g>
+  <g filter="url(#glow07)" fill="#ffb347">
+    <path d="M46 54 L56 60 L46 66 Z"/>
+    <path d="M74 54 L64 60 L74 66 Z"/>
+  </g>
+  <path d="M60 72 L60 84" stroke="#ff2bd6" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/>
+</svg>

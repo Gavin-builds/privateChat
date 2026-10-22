@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#05050a">
+  <title>匿名大厅 · PRIVATE CHAT</title>
+  <link rel="stylesheet" href="/public/css/base.css">
+  <link rel="stylesheet" href="/public/css/layout.css">
+  <link rel="stylesheet" href="/public/css/components.css">
+</head>
+<body>
+
+  <!-- 身份设置 -->
+  <div class="modal-overlay" id="setupModal">
+    <div class="modal-content">
+      <div class="modal-head">
+        <div class="modal-kicker mono">// IDENTITY_INIT</div>
+        <h2>接入匿名大厅</h2>
+        <p class="modal-subtitle">基于 IP 与设备识别身份，设置你的代号和头像</p>
+      </div>
+
+      <div class="setup-form">
+        <div class="form-group">
+          <label for="nickname"><span class="label-index mono">01</span>代号 / NICKNAME</label>
+          <div class="nickname-input-group">
+            <input type="text" id="nickname" placeholder="输入你的代号…" maxlength="20" autocomplete="off">
+            <button type="button" id="randomNicknameBtn" class="ghost-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M21 3l-7 7M8 21H3v-5M3 21l7-7M21 16v5h-5M16 21l5-5M3 8V3h5M3 3l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              随机
+            </button>
+          </div>
+          <div class="form-hint">该代号会显示在公共频道中</div>
+        </div>
+
+        <div class="form-group">
+          <label><span class="label-index mono">02</span>头像 / AVATAR</label>
+          <div class="avatar-options" id="avatarOptions"></div>
+          <div class="avatar-upload">
+            <button type="button" id="uploadAvatarBtn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5l5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              上传自定义头像
+            </button>
+            <input type="file" id="avatarUpload" accept="image/*" hidden>
+            <div id="customAvatarPreview"></div>
+          </div>
+        </div>
+
+        <button type="button" id="confirmSetup" class="btn-primary">
+          进入大厅
+          <span class="btn-arrow mono">→</span>
+        </button>
+
+        <div class="setup-info mono">
+          <span class="info-dot"></span>
+          身份按 IP + 设备保存，下次进入自动恢复
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主聊天界面 -->
+  <div class="chat-container" id="chatContainer" hidden>
+    <header class="chat-header">
+      <div class="header-left">
+        <div class="brand">
+          <div class="brand-mark mono">//</div>
+          <div class="brand-text">
+            <h1>匿名大厅</h1>
+            <div class="brand-sub mono">PRIVATE CHAT · LOBBY</div>
+          </div>
+        </div>
+        <div class="user-info" id="userInfo"></div>
+      </div>
+
+      <div class="header-right">
+        <button class="online-status" id="onlineStatus" title="查看在线用户">
+          <span class="live-dot"></span>
+          <span class="online-label mono">ONLINE</span>
+          <span class="online-count" id="onlineCount">0</span>
+        </button>
+        <button id="changeProfile" class="btn-outline">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4zM13.5 6.5l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          修改
+        </button>
+      </div>
+    </header>
+
+    <div class="chat-main">
+      <!-- 在线用户 -->
+      <aside class="online-sidebar" id="onlineSidebar">
+        <div class="sidebar-header">
+          <h3><span class="mono">NODES</span>在线用户</h3>
+          <button class="sidebar-toggle" id="sidebarToggle" aria-label="收起在线用户">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="online-list" id="onlineList"></div>
+        <div class="sidebar-footer mono">PUBLIC CHANNEL / OPEN BROADCAST</div>
+      </aside>
+
+      <!-- 聊天区域 -->
+      <section class="chat-area">
+        <div class="channel-bar">
+          <span class="channel-tag mono">#LOBBY</span>
+          <span class="channel-desc">公共频道 · 所有人可见</span>
+          <span class="channel-meta mono" id="channelMeta">MSG 0</span>
+        </div>
+
+        <div class="chat-messages" id="messagesContainer"></div>
+
+        <div class="chat-input-area">
+          <div class="input-tools">
+            <button id="emojiBtn" title="表情">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+            <button id="imageBtn" title="发送图片">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="1.6" fill="currentColor"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </button>
+            <input type="file" id="imageUpload" accept="image/*" hidden>
+            <span class="tool-hint mono">ENTER 发送 · SHIFT+ENTER 换行</span>
+          </div>
+
+          <div class="emoji-picker" id="emojiPicker"></div>
+
+          <div class="input-group">
+            <textarea id="messageInput" rows="1" maxlength="2000" placeholder="输入消息，向大厅广播…" autocomplete="off"></textarea>
+            <button id="sendBtn">
+              发送
+              <span class="send-key mono">↵</span>
+            </button>
+          </div>
+
+          <div class="status" id="status"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 图片查看器 -->
+  <div class="image-viewer" id="imageViewer">
+    <div class="image-viewer-content">
+      <button class="close-btn" aria-label="关闭">&times;</button>
+      <div class="image-controls">
+        <button class="zoom-btn zoom-out" title="缩小">−</button>
+        <button class="zoom-btn zoom-in" title="放大">+</button>
+        <button class="zoom-btn zoom-reset" title="重置">1:1</button>
+      </div>
+      <img src="" alt="查看图片" class="full-image">
+      <div class="image-info mono"></div>
+    </div>
+  </div>
+
+  <!-- 修改资料 -->
+  <div class="modal-overlay" id="editProfileModal" hidden>
+    <div class="modal-content">
+      <div class="modal-head">
+        <div class="modal-kicker mono">// PROFILE_PATCH</div>
+        <h2>修改资料</h2>
+        <p class="modal-subtitle">更新你的代号与头像，修改会同步到大厅</p>
+      </div>
+
+      <div class="edit-form">
+        <div class="form-group">
+          <label for="editNickname"><span class="label-index mono">01</span>代号 / NICKNAME</label>
+          <div class="nickname-input-group">
+            <input type="text" id="editNickname" placeholder="输入新代号…" maxlength="20" autocomplete="off">
+            <button type="button" id="editRandomNicknameBtn" class="ghost-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M21 3l-7 7M8 21H3v-5M3 21l7-7M21 16v5h-5M16 21l5-5M3 8V3h5M3 3l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              随机
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><span class="label-index mono">02</span>头像 / AVATAR</label>
+          <div class="avatar-options edit-avatar-options" id="editAvatarOptions"></div>
+          <div class="avatar-upload">
+            <button type="button" id="editUploadAvatarBtn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5l5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              上传新头像
+            </button>
+            <input type="file" id="editAvatarUpload" accept="image/*" hidden>
+            <div id="editCustomAvatarPreview"></div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="saveProfileBtn" class="btn-primary">保存修改</button>
+          <button type="button" id="cancelEditBtn" class="btn-outline">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/public/js/chat.js"></script>
+</body>
+</html>

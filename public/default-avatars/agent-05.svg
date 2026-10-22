@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg05" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#0a1c30"/>
+      <stop offset="100%" stop-color="#05070d"/>
+    </radialGradient>
+    <filter id="glow05" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid05" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#00e5ff" stroke-opacity="0.10" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="120" height="120" fill="url(#bg05)"/>
+  <rect width="120" height="120" fill="url(#grid05)"/>
+  <circle cx="60" cy="60" r="46" fill="none" stroke="#00e5ff" stroke-opacity="0.35" stroke-dasharray="3 7"/>
+  <g filter="url(#glow05)" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M30 62 L36 62 L40 48 L46 74 L52 40 L58 68 L64 54 L70 66 L76 44 L82 70 L88 58"/>
+  </g>
+  <g stroke="#ff2bd6" stroke-width="2" stroke-linecap="round" opacity="0.9">
+    <path d="M34 82 H86"/>
+  </g>
+  <g fill="#00e5ff" opacity="0.8">
+    <circle cx="34" cy="82" r="2"/>
+    <circle cx="60" cy="82" r="2"/>
+    <circle cx="86" cy="82" r="2"/>
+  </g>
+</svg>

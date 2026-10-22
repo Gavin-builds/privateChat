@@ -1,0 +1,26 @@
+# 依赖
+node_modules/
+
+# 运行时数据（聊天记录、用户资料、昵称库）
+data/*
+!data/.gitkeep
+
+# 用户上传（头像、聊天图片）
+uploads/*
+!uploads/.gitkeep
+
+# 环境变量
+.env
+.env.*
+
+# 日志
+*.log
+npm-debug.log*
+
+# 操作系统 / IDE
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+package-lock.json

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg08" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#101a33"/>
+      <stop offset="100%" stop-color="#05060c"/>
+    </radialGradient>
+    <filter id="glow08" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid08" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#6ea8ff" stroke-opacity="0.10" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="120" height="120" fill="url(#bg08)"/>
+  <rect width="120" height="120" fill="url(#grid08)"/>
+  <circle cx="60" cy="60" r="46" fill="none" stroke="#6ea8ff" stroke-opacity="0.32" stroke-dasharray="3 7"/>
+  <g filter="url(#glow08)" fill="none" stroke="#6ea8ff" stroke-width="3" stroke-linejoin="round">
+    <path d="M60 26 L86 40 L86 72 L60 92 L34 72 L34 40 Z"/>
+    <path d="M60 26 L60 58 M34 40 L60 58 L86 40 M60 58 L60 92" stroke-width="2" stroke-opacity="0.75"/>
+  </g>
+  <g filter="url(#glow08)" fill="#ff2bd6">
+    <circle cx="60" cy="58" r="4"/>
+  </g>
+  <g stroke="#00e5ff" stroke-width="1.6" opacity="0.85">
+    <path d="M24 60 H32 M88 60 H96"/>
+  </g>
+</svg>
